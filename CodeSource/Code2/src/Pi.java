@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -17,8 +19,8 @@ public class Pi
     {
 	long total=0;
 	// 10 workers, 50000 iterations each
-	total = new Master().doRun(50000, 10);
-	System.out.println("total from Master = " + total);
+	total = new Master().doRun(8000000/8, 8);
+	/*System.out.println("total from Master = " + total);*/
     }
 }
 
@@ -55,14 +57,24 @@ class Master {
 
 	long stopTime = System.currentTimeMillis();
 
-	System.out.println("\nPi : " + pi );
-	System.out.println("Error: " + (Math.abs((pi - Math.PI)) / Math.PI) +"\n");
-
+	System.out.println("\nApprox value: " + pi );
+	System.out.println("Error: " + (Math.abs((pi - Math.PI)) / Math.PI));
 	System.out.println("Ntot: " + totalCount*numWorkers);
+	System.out.println("Ncible: " + total);
+	System.out.println("Difference to exact value of pi: " + (pi - Math.PI));
 	System.out.println("Available processors: " + numWorkers);
-	System.out.println("Time Duration (ms): " + (stopTime - startTime) + "\n");
+	System.out.println("Time Duration (ms): " + (stopTime - startTime));
 
-	System.out.println( (Math.abs((pi - Math.PI)) / Math.PI) +" "+ totalCount*numWorkers +" "+ numWorkers +" "+ (stopTime - startTime));
+	/* fichier */
+	System.out.println((pi +";"+ Math.abs((pi - Math.PI)) / Math.PI) +";"+ totalCount*numWorkers +";"+ total +";"+ numWorkers +";"+ (stopTime - startTime));
+
+	try {
+		FileWriter fw = new FileWriter("XP_piJava.txt",true);
+		fw.write((pi + ";" + Math.abs((pi - Math.PI)) / Math.PI) + ";" + totalCount * numWorkers +";"+ total +";" + numWorkers + ";" + (stopTime - startTime) + "\n");
+		fw.close();
+	} catch (IOException ioe) {
+		System.err.println("IOException: " + ioe.getMessage());
+	}
 
 	exec.shutdown();
 	return total;
@@ -94,3 +106,4 @@ class Worker implements Callable<Long>
 	  return circleCount;
       }
 }
+
