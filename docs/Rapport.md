@@ -287,21 +287,52 @@ erreur = ((π - estimation de pi)/ π )<= 10^-2
 
 ---
 
-Voici un **plan d'expérimentation sous forme de tableau** pour tester les performances des deux codes (avec *work-stealing* et pool fixe de threads) :
+Voici un **plan d'expérimentation sous forme de tableau** pour tester les performances des deux codes :
 
 | **Scénario**  | **Paramètre**               | **Valeurs possibles**                          | **Mesures à prendre**                             |
 |---------------|-----------------------------|-----------------------------------------------|---------------------------------------------------|
-| **1. Impact du nombre de processus** | **`nbProcessus`**             | {1, 2, 4, 6, 8, 10, 12, 14, 16}                | Erreur relative, Temps d'exécution                |
-|               | **`nbItérations`**           | \(10^7\)                                      | Erreur relative, Temps d'exécution                |
-| **2. Impact du nombre d'itérations** | **`nbItérations`**           | {10^6, 10^7, 10^8, 10^9}                      | Erreur relative, Temps d'exécution                |
-|               | **`nbProcessus`**            | 8                                             | Erreur relative, Temps d'exécution                |
-| **3. Comparaison entre les deux implémentations** | **`nbProcessus`**            | 8                                             | Erreur relative, Temps d'exécution                |
-|               | **`nbItérations`**           | \(10^7\)                                      | Erreur relative, Temps d'exécution                |
-|               | **Implémentation**           | *Work-stealing* vs Pool fixe de threads        | Comparaison de précision et de temps d'exécution  |
+| **1. Impact du nombre de processus** | **`nbProcessus`**             | {1, 2, 4, 8, 16}                | Temps d'exécution                |
+|               | **`nbItérations`**           | \(10^7\)                                      | Temps d'exécution                |
+| **2. Impact du nombre d'itérations** | **`nbItérations`**           | {16x10^6, 16x10^7, 16x10^8}                      | Temps d'exécution                |
+|               | **`nbProcessus`**            | 8                                             | Temps d'exécution                |
+
+
 
 ### **Détails des mesures :**
-- **Erreur relative :** ((π - estimation de pi)/ π ), avec un objectif d'erreur <= 10^-2 (1%).
-- **Temps d'exécution :** Temps total nécessaire pour calculer l'approximation de \(\pi\).
+- **Erreur relative :** ((π - estimation de pi)/ π ), avec un objectif d'erreur <= 10^-2.
+- **Temps d'exécution :** Temps total nécessaire pour calculer l'approximation de pi.
 
+### Expérimentations
+#### Assignement 102
+
+##### Tableau de Moyenne de temps d'éxécution
+| **NB Processeurs**  | **16x10^6**               | **16x10^7**                          | **16x10^8**                             |
+|---------------|-----------------------------|-----------------------------------------------|---------------------------------------------------|
+|1|
+|2|
+|4|
+|8|
+|16|
+
+##### Tableau de speedup en fonction du nombre de processus
+| **NB Processeurs**  | **16x10^6**               | **16x10^7**                          | **16x10^8**                             |
+|---------------|-----------------------------|-----------------------------------------------|---------------------------------------------------|
+|1|
+|2|
+|4|
+|8|
+|16|
+
+#graphe
+
+#### Pi.java
+
+| **NB Processeurs**  | **16x10^6**               | **16x10^7**                          | **16x10^8**                             |
+|---------------|-----------------------------|-----------------------------------------------|---------------------------------------------------|
+|1| 
+|2|
+|4|
+|8|
+|16|
 ---
 
