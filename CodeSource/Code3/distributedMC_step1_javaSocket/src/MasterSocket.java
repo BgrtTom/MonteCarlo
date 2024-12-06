@@ -16,7 +16,7 @@ public class MasterSocket {
     public static void main(String[] args) throws Exception {
 
 	// MC parameters
-	int totalCount = 16000000; // total number of throws on a Worker
+	int totalCount = Integer.parseInt(args[0]); // total number of throws on a Worker
 	int total = 0; // total number of throws inside quarter of disk
 	double pi; 
 
@@ -37,8 +37,10 @@ public class MasterSocket {
 	catch(IOException ioE){
 	   ioE.printStackTrace();
 	}
-	
-	for (int i=0; i<numWorkers; i++){
+
+	/*
+	for (int i=0; i<tab_port.length; i++){
+
 	    System.out.println("Enter worker"+ i +" port : ");
 	    try{
 		s = bufferRead.readLine();
@@ -47,7 +49,7 @@ public class MasterSocket {
 	    catch(IOException ioE){
 		ioE.printStackTrace();
 	    }
-	}
+	}*/
 
        //create worker's socket
        for(int i = 0 ; i < numWorkers ; i++) {
@@ -59,7 +61,7 @@ public class MasterSocket {
        }
 
        String message_to_send;
-       message_to_send = String.valueOf(totalCount);
+       message_to_send = String.valueOf(totalCount/numWorkers);
 
        String message_repeat = "y";
 
@@ -83,21 +85,29 @@ public class MasterSocket {
 	   for(int i = 0 ; i < numWorkers ; i++) {
 	       total += Integer.parseInt(tab_total_workers[i]);
 	   }
-	   pi = 4.0 * total / totalCount / numWorkers;
+	   pi = 4.0 * total / totalCount;
 
 	   stopTime = System.currentTimeMillis();
 
-	   System.out.println("\nPi : " + pi );
-	   System.out.println("Error: " + (Math.abs((pi - Math.PI)) / Math.PI) +"\n");
-	   
-	   System.out.println("Ntot: " + totalCount*numWorkers);
+	   System.out.println("Approx value: " + pi );
+	   System.out.println("Error: " + (Math.abs((pi - Math.PI)) / Math.PI));
+	   System.out.println("Ntot: " + totalCount);
+	   System.out.println("Ncible: " + total);
+	   System.out.println("Difference to exact value of pi: " + (pi - Math.PI));
 	   System.out.println("Available processors: " + numWorkers);
-	   System.out.println("Time Duration (ms): " + (stopTime - startTime) + "\n");
-	   
-	   System.out.println( (Math.abs((pi - Math.PI)) / Math.PI) +" "+ totalCount*numWorkers +" "+ numWorkers +" "+ (stopTime - startTime));
+	   System.out.println("Time Duration (ms): " + (stopTime - startTime));
+
+	   System.out.println((pi +";"+ Math.abs((pi - Math.PI)) / Math.PI) +";"+ totalCount+";"+ total +";"+ numWorkers +";"+ (stopTime - startTime));
+
+
+	   FileWriter fw = new FileWriter("XP_socket.txt",true);
+	   fw.write((pi + ";" + Math.abs((pi - Math.PI)) / Math.PI) + ";" + totalCount +";"+ total +";" + numWorkers + ";" + (stopTime - startTime) + "\n");
+	   fw.close();
+
 
 	   System.out.println("\n Repeat computation (y/N): ");
 	   try{
+		   total = 0;
 	       message_repeat = bufferRead.readLine();
 	       System.out.println(message_repeat);
 	   }
@@ -107,11 +117,11 @@ public class MasterSocket {
        }
        
        for(int i = 0 ; i < numWorkers ; i++) {
-	   System.out.println("END");     // Send ending message
-	   writer[i].println("END") ;
-	   reader[i].close();
-	   writer[i].close();
-	   sockets[i].close();
+		   System.out.println("END");     // Send ending message
+		   writer[i].println("END") ;
+		   reader[i].close();
+		   writer[i].close();
+		   sockets[i].close();
        }
    }
 }
