@@ -289,12 +289,15 @@ erreur = ((π - estimation de pi)/ π )<= 10^-2
 
 Voici un **plan d'expérimentation sous forme de tableau** pour tester les performances des deux codes :
 
+Dans cette étude, les paramètres de test et leurs valeurs ont été minutieusement sélectionnés pour évaluer les performances des programmes parallèles dans deux scénarios principaux : **scalabilité forte** et **scalabilité faible**. Chaque scénario permet d’explorer une facette différente de la parallélisation en jouant sur les relations entre **nombre de processus** et **charge de travail**.
+
+
 | **Scénario**  | **Paramètre**               | **Valeurs possibles**                          | **Mesures à prendre**                             |
 |---------------|-----------------------------|-----------------------------------------------|---------------------------------------------------|
 | **1. Impact du nombre de processus** | **`nbProcessus`**             | {1, 2, 4, 8, 16}                | Temps d'exécution                |
-|               | **`nbItérations`**           | \(10^7\)                                      | Temps d'exécution                |
-| **2. Impact du nombre d'itérations** | **`nbItérations`**           | {16x10^6, 16x10^7, 16x10^8}                      | Temps d'exécution                |
-|               | **`nbProcessus`**            | 8                                             | Temps d'exécution                |
+|               | **`nbIterations`**           | 16*(10^7)                                      | Temps d'exécution                |
+| **2. Impact du nombre d'itérations** | **`nbIterations`**           | {nbProcessus\*16x10^7, nbProcessus\*16x10^8, nbProcessus\*16x10^9}                      | Temps d'exécution                |
+|               | **`nbProcessus`**            | {1, 2, 4, 8, 16}                                            | Temps d'exécution                |
 
 
 
@@ -302,7 +305,42 @@ Voici un **plan d'expérimentation sous forme de tableau** pour tester les perfo
 - **Erreur relative :** ((π - estimation de pi)/ π ), avec un objectif d'erreur <= 10^-2.
 - **Temps d'exécution :** Temps total nécessaire pour calculer l'approximation de pi.
 
-### Expérimentations
+
+### Justification des valeurs de test choisies
+
+#### **1. Scénario 1 : Impact du nombre de processus (scalabilité forte)**
+
+Dans ce scénario, nous maintenons constant le nombre total d'itérations (\(16 \times 10^7\)) et faisons varier le nombre de processus. L’objectif est d’analyser l’impact direct de la parallélisation sur une charge de travail fixe, ce qui permet d’évaluer la **scalabilité forte**.
+
+**Pourquoi ces valeurs ?**
+- **Nombre de processus** :
+  - Nous avons choisi les valeurs \( \{ 1, 2, 4, 8, 16 \} \) car elles correspondent à des configurations courantes sur des systèmes multicœurs ou des clusters.  
+  - Le test avec **1 processus** sert de référence pour mesurer les performances séquentielles et calculer le **speed-up**.
+  - Les valeurs **2, 4, 8**, et **16 processus** permettent d'observer comment l'ajout progressif de ressources améliore (ou non) les performances.
+  - La progression géométrique du nombre de processus (multiplié par 2) est choisie pour faciliter l'analyse du **speed-up** (gain théorique linéaire).
+
+- **Nombre d’itérations (\(16 \times 10^7\))** :
+  - La charge de travail est maintenue constante pour chaque test afin que l’augmentation du nombre de processus soit le seul facteur influençant le temps d'exécution. 
+  - \(16 \times 10^7\) correspond à un volume de calcul suffisant pour saturer plusieurs cœurs, ce qui garantit des tests significatifs pour les systèmes parallèles.
+
+
+
+#### **2. Scénario 2 : Impact du nombre d'itérations (scalabilité faible)**
+
+Dans ce scénario, nous augmentons proportionnellement le nombre d'itérations avec le nombre de processus (\(nbProcessus \times 16 \times 10^7\)). L’objectif est d’évaluer la **scalabilité faible**, c’est-à-dire la capacité du programme à gérer une charge de travail croissante avec des ressources supplémentaires.
+
+**Pourquoi ces valeurs ?**
+- **Nombre d’itérations** :
+  - La charge de travail est proportionnelle au nombre de processus. Cela simule des cas réalistes où chaque processus est responsable d’une part fixe de la charge totale, indépendamment du nombre total de processus.
+  - Les valeurs \( nbProcessus \times 16 \times 10^7 \) et \( nbProcessus \times 16 \times 10^8 \) permettent de tester à la fois une charge modérée et une charge élevée, ce qui met en évidence les limitations du programme en cas de surcharge.
+
+- **Nombre de processus (\(1, 2, 4, 8, 16\))** :
+  - Comme dans le scénario précédent, ces valeurs progressent géométriquement pour permettre une analyse cohérente de l’efficacité.
+  - La multiplication par le nombre de processus reflète une augmentation naturelle de la charge de travail, où chaque processus conserve un volume fixe de calcul.
+
+
+---
+
 #### Assignement 102
 
 ##### Tableau de Moyenne de temps d'éxécution
@@ -323,7 +361,7 @@ Voici un **plan d'expérimentation sous forme de tableau** pour tester les perfo
 |8|
 |16|
 
-#graphe
+
 
 #### Pi.java
 
