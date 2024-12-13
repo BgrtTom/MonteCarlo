@@ -283,6 +283,15 @@ Dans cette étude, les paramètres de test et leurs valeurs ont été minutieuse
 - **Erreur relative :** ((π - estimation de pi)/ π ), avec un objectif d'erreur <= 10^-2.
 - **Temps d'exécution :** Temps total nécessaire pour calculer l'approximation de pi.
 
+### **Graphes :**
+
+#### **Scénario 1 (scalabilité forte) :**
+
+<img src="img/Figure_scaForte.png">
+
+#### **Scénario 2 (scalabilité faible) :**
+
+<img src="img/Figure_scaFaible.png">
 
 ### Justification des valeurs de test choisies
 
@@ -373,25 +382,19 @@ Ce code est aussi une implémentation directe de l'algorithme de Monte Carlo pou
 
 2. **Distribution des calculs :**
     - Le `MasterSocket` divise la charge de travail (`totalCount`) entre les workers.
-    - Chaque `WorkerSocket` effectue ses calculs de manière indépendante, assurant un parallélisme maximal.
+    - Chaque `WorkerSocket` effectue ses calculs de manière indépendante.
 
 3. **Agrégation des résultats :**
     - Le `MasterSocket` recueille les résultats de tous les workers via des sockets, les agrège pour estimer π, et calcule les métriques de performance.
 
 4. **Persistance des résultats :**
-    - Les résultats de chaque exécution sont enregistrés dans un fichier texte (`XP_socket.txt`) pour analyse ultérieure.
-
-5. **Gestion des erreurs et des connexions :**
-    - Les connexions entre le `MasterSocket` et les `WorkerSocket` sont fermées proprement avec des messages "END".
-    - Des mécanismes simples de gestion des exceptions sont implémentés pour éviter les interruptions dues à des erreurs réseau.
-
+    - Les résultats de chaque exécution sont enregistrés dans un fichier texte (`XP_socket.txt`) pour l'analyse de performance.
 ---
 
 ### ***Explication de l'exécution***
 
 Les programmes `MasterSocket` et `WorkerSocket` interagissent via des **sockets Java**, qui permettent l'échange de messages via des flux d'entrée et de sortie. Le programme **MasterSocket** agit en tant que client, établissant des connexions avec plusieurs serveurs (workers) via des **sockets** sur des ports spécifiques. Une fois les connexions établies, le master envoie le nombre de lancers à effectuer à chaque worker, répartissant ainsi la charge de calcul. Chaque worker, représenté par le programme **WorkerSocket**, écoute les connexions entrantes sur un port donné, accepte les connexions via un **`ServerSocket`**, puis reçoit les messages du master (nombre de lancers à effectuer) via un **BufferRead**. Les workers effectuent le calcul de Monte Carlo, en utilisant Pi.java. Les résultats sont ensuite envoyés au master via des **PrintWriter**, et le master combine les résultats pour obtenir une approximation finale de π. Une fois le calcul terminé, le master envoie un message "END" à chaque worker, signalant la fin de l'opération, et chaque worker ferme sa connexion.
 
-<img src="img/UML_javaSocket.png">
 
 
 
