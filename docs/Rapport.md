@@ -7,6 +7,8 @@ INFI-3
 
 </div>
 
+Ce rapport a été rédigé avec l'assistance de l'IA ChatGPT pour mettre en forme la présentation du document, pour qu'elle soit claire. Les fautes d'orthographe ont été corrigées à l'aide de l'extension LanguageTool et du site Scribens : https://www.scribens.fr.
+
 ### **I - La méthode de Monte Carlo pour le calcul de π**
 
 ---
