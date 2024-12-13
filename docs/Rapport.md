@@ -35,6 +35,8 @@ La méthode repose sur une simulation géométrique :
 
 La figure 1 ci-dessous illustre ce phénomène
 
+<img src="img/Figure_1.png">
+
 ---
 
 ### Algorithme
@@ -115,7 +117,7 @@ On pouvait aussi utiliser le paradigme d'itération parrallèle/paralléisme de 
 
 ---
 
-## **Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π**
+## **Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire partagée**
 
 ### <u>Code 1 : Assignnment102</u>
 
@@ -156,6 +158,7 @@ Ce code implémentation directe de l'alogithme de Monte Carlo pour calculer pi, 
 
 1. **Parallélisme et exécution concurrente :**
     - Utilisation d'un `ExecutorService` avec un pool de threads optimisé pour le matériel disponible (*work-stealing pool*).
+    - Le Work-Stealing Pool répartit les tâches entre plusieurs threads, où chaque thread traite ses propres tâches. Si un thread devient inactif, il "vole" des tâches d'autres threads pour équilibrer la charge.
     - Les tâches sont définies dans une classe interne (`MonteCarlo`), et leur exécution est indépendante, permettant une distribution efficace sur plusieurs cœurs.
 
 
@@ -260,43 +263,18 @@ Ce code implémentation le pseudo code que j'avais proposé précédement. Il ut
 
 ---
 
-A faire comparaison entre les deux
-
----
-
----
-
 ## Plan d'expérimentation :
-
-### Code 1 :
-
-nbProcessus ∈{1,2,4,8,16}
-
-16 * nbItération ∈ {10^6,10^7,10^8,10^9}
-
-erreur = ((π - estimation de pi)/ π )<= 10^-2
-
----
-### Code 2 :
-
-nbProcessus ∈{1,2,4,8,16}
-
-16 * nbItération ∈ {10^6,10^7,10^8,10^9}
-
-erreur = ((π - estimation de pi)/ π )<= 10^-2
-
----
 
 Voici un **plan d'expérimentation sous forme de tableau** pour tester les performances des deux codes :
 
-Dans cette étude, les paramètres de test et leurs valeurs ont été minutieusement sélectionnés pour évaluer les performances des programmes parallèles dans deux scénarios principaux : **scalabilité forte** et **scalabilité faible**. Chaque scénario permet d’explorer une facette différente de la parallélisation en jouant sur les relations entre **nombre de processus** et **charge de travail**.
+Dans cette étude, les paramètres de test et leurs valeurs ont été minutieusement sélectionnés pour évaluer les performances des programmes parallèles dans deux scénarios principaux : **scalabilité forte** et **scalabilité faible**. Chaque scénario joue sur les relations entre **nombre de processus** et **charge de travail**.
 
 
 | **Scénario**  | **Paramètre**               | **Valeurs possibles**                          | **Mesures à prendre**                             |
 |---------------|-----------------------------|-----------------------------------------------|---------------------------------------------------|
-| **1. Impact du nombre de processus** | **`nbProcessus`**             | {1, 2, 4, 8, 16}                | Temps d'exécution                |
+| **1. Impact du nombre de processus (scalabilité forte)** | **`nbProcessus`**             | {1, 2, 4, 8, 16}                | Temps d'exécution                |
 |               | **`nbIterations`**           | 16*(10^7)                                      | Temps d'exécution                |
-| **2. Impact du nombre d'itérations** | **`nbIterations`**           | {nbProcessus\*16x10^7, nbProcessus\*16x10^8, nbProcessus\*16x10^9}                      | Temps d'exécution                |
+| **2. Impact du nombre d'itérations (scalabilité faible)** | **`nbIterations`**           | {nbProcessus\*16x10^7, nbProcessus\*16x10^8, nbProcessus\*16x10^9}                      | Temps d'exécution                |
 |               | **`nbProcessus`**            | {1, 2, 4, 8, 16}                                            | Temps d'exécution                |
 
 
@@ -310,31 +288,31 @@ Dans cette étude, les paramètres de test et leurs valeurs ont été minutieuse
 
 #### **1. Scénario 1 : Impact du nombre de processus (scalabilité forte)**
 
-Dans ce scénario, nous maintenons constant le nombre total d'itérations (\(16 \times 10^7\)) et faisons varier le nombre de processus. L’objectif est d’analyser l’impact direct de la parallélisation sur une charge de travail fixe, ce qui permet d’évaluer la **scalabilité forte**.
+Dans ce scénario, nous maintenons constant le nombre total d'itérations (16 * 10^7) et faisons varier le nombre de processus. L’objectif est d’analyser l’impact direct de la parallélisation sur une charge de travail fixe, ce qui permet d’évaluer la **scalabilité forte**.
 
 **Pourquoi ces valeurs ?**
 - **Nombre de processus** :
-  - Nous avons choisi les valeurs \( \{ 1, 2, 4, 8, 16 \} \) car elles correspondent à des configurations courantes sur des systèmes multicœurs ou des clusters.  
+  - Nous avons choisi les valeurs { 1, 2, 4, 8, 16 }) car elles correspondent à des configurations courantes sur des systèmes multicœurs ou des clusters.  
   - Le test avec **1 processus** sert de référence pour mesurer les performances séquentielles et calculer le **speed-up**.
   - Les valeurs **2, 4, 8**, et **16 processus** permettent d'observer comment l'ajout progressif de ressources améliore (ou non) les performances.
   - La progression géométrique du nombre de processus (multiplié par 2) est choisie pour faciliter l'analyse du **speed-up** (gain théorique linéaire).
 
-- **Nombre d’itérations (\(16 \times 10^7\))** :
+- **Nombre d’itérations (16 * 10^7)** :
   - La charge de travail est maintenue constante pour chaque test afin que l’augmentation du nombre de processus soit le seul facteur influençant le temps d'exécution. 
-  - \(16 \times 10^7\) correspond à un volume de calcul suffisant pour saturer plusieurs cœurs, ce qui garantit des tests significatifs pour les systèmes parallèles.
+  - (16 * 10^7) correspond à un volume de calcul assez conséquent, ce qui garantit des tests significatifs pour les systèmes parallèles.
 
 
 
 #### **2. Scénario 2 : Impact du nombre d'itérations (scalabilité faible)**
 
-Dans ce scénario, nous augmentons proportionnellement le nombre d'itérations avec le nombre de processus (\(nbProcessus \times 16 \times 10^7\)). L’objectif est d’évaluer la **scalabilité faible**, c’est-à-dire la capacité du programme à gérer une charge de travail croissante avec des ressources supplémentaires.
+Dans ce scénario, nous augmentons proportionnellement le nombre d'itérations avec le nombre de processus (nbProcessus * 16 * 10^7). L’objectif est d’évaluer la **scalabilité faible**, c’est-à-dire la capacité du programme à gérer une charge de travail croissante avec des ressources supplémentaires.
 
 **Pourquoi ces valeurs ?**
 - **Nombre d’itérations** :
   - La charge de travail est proportionnelle au nombre de processus. Cela simule des cas réalistes où chaque processus est responsable d’une part fixe de la charge totale, indépendamment du nombre total de processus.
-  - Les valeurs \( nbProcessus \times 16 \times 10^7 \) et \( nbProcessus \times 16 \times 10^8 \) permettent de tester à la fois une charge modérée et une charge élevée, ce qui met en évidence les limitations du programme en cas de surcharge.
+  - Les valeurs (nbProcessus * 16 * 10^6) et (nbProcessus * 16 * 10^7) permettent de tester à la fois une charge modérée et une charge élevée, ce qui met en évidence les limitations du programme en cas de surcharge.
 
-- **Nombre de processus (\(1, 2, 4, 8, 16\))** :
+- **Nombre de processus (1, 2, 4, 8, 16)** :
   - Comme dans le scénario précédent, ces valeurs progressent géométriquement pour permettre une analyse cohérente de l’efficacité.
   - La multiplication par le nombre de processus reflète une augmentation naturelle de la charge de travail, où chaque processus conserve un volume fixe de calcul.
 
@@ -342,14 +320,74 @@ Dans ce scénario, nous augmentons proportionnellement le nombre d'itérations a
 ---
 ---
 
+## **Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire distribuée**
+
 ### <u>Code 3 : javaSocket</u>
 
-Conception :
-1. MasterSocket.java (Le master) :
-Le programme MasterSocket est un client qui se connecte à plusieurs serveurs (workers) pour distribuer les calculs nécessaires à l'estimation de π.
+Ce code est aussi une implémentation directe de l'algorithme de Monte Carlo pour calculer π, présenté précédemment. C'est une implémentation pour une éxécution en mémoire distribué, mais qui peut aussi fonctionner en mémoire partagée. Un master distribue les tâches à plusieurs workers via des sockets réseau.
 
-2. WorkerSocket.java (Le worker) :
-Le programme WorkerSocket représente un worker qui écoute une connexion d'un client (Master) et effectue les calculs de Monte Carlo pour estimer la valeur de π.
+### ***Description des classes et des composants***
+
+#### **1. Classe `MasterSocket` :**
+- **Rôle :** Coordonne les calculs parallèles pour estimer la valeur de π en distribuant les tâches aux workers (`WorkerSocket`) via des connexions socket.
+- **Attributs :**
+    - `int maxServer` : Nombre maximum de workers supportés.
+    - `int[] tab_port` : Tableau des ports associés aux workers.
+    - `String[] tab_total_workers` : Tableau pour stocker les résultats de chaque worker.
+    - `String ip` : Adresse IP du serveur principal.
+    - `BufferedReader[] reader` : Tableau de lecteurs(Buffer) pour recevoir les messages des workers.
+    - `PrintWriter[] writer` : Tableau d'écrivains(Printer) pour envoyer des messages aux workers.
+    - `Socket[] sockets` : Tableau de sockets pour établir la communication avec les workers.
+- **Méthodes :**
+    - **`main(String[] args)` :**
+        - Initialise les sockets pour chaque worker.
+        - Lit le nombre de workers souhaité et configure les connexions.
+        - Envoie les paramètres de calcul aux workers.
+        - Agrège les résultats renvoyés par les workers pour calculer π.
+        - Affiche les résultats, y compris l'erreur relative, le temps d'exécution, et la différence avec la valeur réelle de π.
+        - Gère les messages de fin pour fermer proprement les connexions.
+
+---
+
+#### **2. Classe `WorkerSocket` :**
+- **Rôle :** Reçoit les instructions du `MasterSocket` pour effectuer des calculs Monte Carlo et renvoie les résultats via une connexion socket.
+- **Attributs :**
+    - `int port` : Port d'écoute du worker.
+    - `boolean isRunning` : Indique si le serveur du worker continue d'exécuter.
+- **Méthodes :**
+    - **`main(String[] args)` :**
+        - Configure le serveur socket pour écouter sur le port spécifié.
+        - Reçoit le nombre d'itérations Monte Carlo à effectuer.
+        - Calcule le nombre de points dans le quart de disque via la méthode `monteCarlo`.
+        - Renvoie le résultat au `MasterSocket`.
+    - **`monteCarlo(int nbIteration)` (Méthode non utilisée car utilisation de Pi.java) :**
+        - Effectue les calculs Monte Carlo en générant des points aléatoires et en comptant ceux qui tombent dans le quart de disque.
+
+---
+
+### ***Points clés techniques***
+
+1. **Communication réseau :**
+    - Le `MasterSocket` agit comme client pour initialiser et coordonner les tâches distribuées.
+    - Les `WorkerSocket` agissent comme serveurs, recevant les instructions et renvoyant les résultats.
+
+2. **Distribution des calculs :**
+    - Le `MasterSocket` divise la charge de travail (`totalCount`) entre les workers.
+    - Chaque `WorkerSocket` effectue ses calculs de manière indépendante, assurant un parallélisme maximal.
+
+3. **Agrégation des résultats :**
+    - Le `MasterSocket` recueille les résultats de tous les workers via des sockets, les agrège pour estimer π, et calcule les métriques de performance.
+
+4. **Persistance des résultats :**
+    - Les résultats de chaque exécution sont enregistrés dans un fichier texte (`XP_socket.txt`) pour analyse ultérieure.
+
+5. **Gestion des erreurs et des connexions :**
+    - Les connexions entre le `MasterSocket` et les `WorkerSocket` sont fermées proprement avec des messages "END".
+    - Des mécanismes simples de gestion des exceptions sont implémentés pour éviter les interruptions dues à des erreurs réseau.
+
+---
+
+### ***Explication de l'exécution***
 
 Les programmes `MasterSocket` et `WorkerSocket` interagissent via des **sockets Java**, qui permettent l'échange de messages via des flux d'entrée et de sortie. Le programme **MasterSocket** agit en tant que client, établissant des connexions avec plusieurs serveurs (workers) via des **sockets** sur des ports spécifiques. Une fois les connexions établies, le master envoie le nombre de lancers à effectuer à chaque worker, répartissant ainsi la charge de calcul. Chaque worker, représenté par le programme **WorkerSocket**, écoute les connexions entrantes sur un port donné, accepte les connexions via un **`ServerSocket`**, puis reçoit les messages du master (nombre de lancers à effectuer) via un **BufferRead**. Les workers effectuent le calcul de Monte Carlo, en utilisant Pi.java. Les résultats sont ensuite envoyés au master via des **PrintWriter**, et le master combine les résultats pour obtenir une approximation finale de π. Une fois le calcul terminé, le master envoie un message "END" à chaque worker, signalant la fin de l'opération, et chaque worker ferme sa connexion.
 
