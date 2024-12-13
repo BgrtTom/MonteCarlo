@@ -274,7 +274,7 @@ Dans cette étude, les paramètres de test et leurs valeurs ont été minutieuse
 |---------------|-----------------------------|-----------------------------------------------|---------------------------------------------------|
 | **1. Impact du nombre de processus (scalabilité forte)** | **`nbProcessus`**             | {1, 2, 4, 8, 16}                | Temps d'exécution                |
 |               | **`nbIterations`**           | 16*(10^7)                                      | Temps d'exécution                |
-| **2. Impact du nombre d'itérations (scalabilité faible)** | **`nbIterations`**           | {nbProcessus\*16x10^7, nbProcessus\*16x10^8, nbProcessus\*16x10^9}                      | Temps d'exécution                |
+| **2. Impact du nombre d'itérations (scalabilité faible)** | **`nbIterations`**           | {nbProcessus\*16x10^7}                      | Temps d'exécution                |
 |               | **`nbProcessus`**            | {1, 2, 4, 8, 16}                                            | Temps d'exécution                |
 
 
@@ -282,16 +282,6 @@ Dans cette étude, les paramètres de test et leurs valeurs ont été minutieuse
 ### **Détails des mesures :**
 - **Erreur relative :** ((π - estimation de pi)/ π ), avec un objectif d'erreur <= 10^-2.
 - **Temps d'exécution :** Temps total nécessaire pour calculer l'approximation de pi.
-
-### **Graphes :**
-
-#### **Scénario 1 (scalabilité forte) :**
-
-<img src="img/Figure_scaForte.png">
-
-#### **Scénario 2 (scalabilité faible) :**
-
-<img src="img/Figure_scaFaible.png">
 
 ### Justification des valeurs de test choisies
 
@@ -301,10 +291,10 @@ Dans ce scénario, nous maintenons constant le nombre total d'itérations (16 * 
 
 **Pourquoi ces valeurs ?**
 - **Nombre de processus** :
-  - Nous avons choisi les valeurs { 1, 2, 4, 8, 16 }) car elles correspondent à des configurations courantes sur des systèmes multicœurs ou des clusters.  
+  - Nous avons choisi les valeurs { 1, 2, 4, 8, 16 } car elles correspondent à des configurations courantes sur des systèmes multicœurs ou des clusters.  
   - Le test avec **1 processus** sert de référence pour mesurer les performances séquentielles et calculer le **speed-up**.
   - Les valeurs **2, 4, 8**, et **16 processus** permettent d'observer comment l'ajout progressif de ressources améliore (ou non) les performances.
-  - La progression géométrique du nombre de processus (multiplié par 2) est choisie pour faciliter l'analyse du **speed-up** (gain théorique linéaire).
+  - La progression géométrique du nombre de processus (multiplié par 2) est choisie pour faciliter l'analyse du **speed-up**.
 
 - **Nombre d’itérations (16 * 10^7)** :
   - La charge de travail est maintenue constante pour chaque test afin que l’augmentation du nombre de processus soit le seul facteur influençant le temps d'exécution. 
@@ -319,12 +309,33 @@ Dans ce scénario, nous augmentons proportionnellement le nombre d'itérations a
 **Pourquoi ces valeurs ?**
 - **Nombre d’itérations** :
   - La charge de travail est proportionnelle au nombre de processus. Cela simule des cas réalistes où chaque processus est responsable d’une part fixe de la charge totale, indépendamment du nombre total de processus.
-  - Les valeurs (nbProcessus * 16 * 10^6) et (nbProcessus * 16 * 10^7) permettent de tester à la fois une charge modérée et une charge élevée, ce qui met en évidence les limitations du programme en cas de surcharge.
+  - La valeur (nbProcessus * 16 * 10^7) permettent de tester une charge élevée.
 
 - **Nombre de processus (1, 2, 4, 8, 16)** :
   - Comme dans le scénario précédent, ces valeurs progressent géométriquement pour permettre une analyse cohérente de l’efficacité.
   - La multiplication par le nombre de processus reflète une augmentation naturelle de la charge de travail, où chaque processus conserve un volume fixe de calcul.
 
+
+### **Graphes :**
+Analyse réaliser sur mon ordinateur personnel :
+
+Processeur Intel Core i5-12400F : 
+- Nombre de cœurs : 6 cœurs physiques.
+- Nombre de threads : 12 threads, grâce à la technologie Hyper-Threading.
+- Fréquence de base : 2,5 GHz.
+- Fréquence turbo : jusqu’à 4,4 GHz en mode boost.
+
+RAM : 32 Go
+
+#### **Scénario 1 (scalabilité forte) :**
+
+<img src="img/Figure_scaForte.png">
+
+#### **Scénario 2 (scalabilité faible) :**
+
+<img src="img/Figure_scaFaible.png">
+
+On constate que Pi.java est nétement plus efficace que Assignement102, avec près de 10 fois le temps d'exécution de Pi.java pour assignement102.  
 
 ---
 ---
