@@ -367,7 +367,7 @@ RAM : 32 Go
    - Le **speed-up** est toujours **inférieur à 1**, confirmant que l'ajout de processus entraîne une **augmentation du temps d'exécution** plutôt qu'une amélioration.
 
 
-**Cependant, on constate que Pi.java est nétement plus efficace que Assignement102, avec près de 6-7 fois le temps d'exécution de Pi.java pour assignement102.**
+**Cependant, on constate que Pi.java est nettement plus efficace que Assignement102, avec près de 6-7 fois le temps d'exécution de Pi.java pour assignement102.**
 
 ---
 ---
