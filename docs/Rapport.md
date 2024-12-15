@@ -458,7 +458,7 @@ Analyse réaliser sur les ordinateurs de la salle G24.
 
 <img src="img/Figure_scaSocket.png" alt="Figure de la scacabilité Forte et Faible du code javaSocket">
 
-#### **Scénario 1 (scalabilité forte) :**
+#### **1. Scénario 1 : Impact du nombre de processus (scalabilité forte)**
 
 - Dans l'implémentation **javaSocket**, on observe une **scalabilité forte exceptionnelle** :
    - Le **temps d’exécution diminue fortement** avec l’augmentation du nombre de processus.
