@@ -118,6 +118,7 @@ worker (nb_it):
 On pouvait aussi utiliser le paradigme d'itération parrallèle/paralléisme de boucle, car chaque itération de boucle dans l'algorithme est indépendante. Que je vais plus détailler dans la suite du rapport à travers une de ses implémentations.
 
 ---
+<br><br>
 
 ## **Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire partagée**
 
@@ -178,6 +179,7 @@ Ce code implémentation directe de l'alogithme de Monte Carlo pour calculer pi, 
 - Le moyen pour réduire cet impacte est de ne pas compter le nombre de point dans le cercle mais compter les point hors du cercle. Il n'y aura donc plus que 25% des itérations qui seront bloquées à la section critique. 
 
 ---
+<br>
 
 ### <u>Code 2 : Pi.java</u>
 
@@ -265,6 +267,8 @@ Ce code implémentation le pseudo code que j'avais proposé précédement. Il ut
 
 ---
 
+<br><br>
+
 ## Plan d'expérimentation :
 
 Voici un **plan d'expérimentation sous forme de tableau** pour tester les performances des deux codes :
@@ -274,10 +278,10 @@ Dans cette étude, les paramètres de test et leurs valeurs ont été minutieuse
 
 | **Scénario**  | **Paramètre**               | **Valeurs possibles**                          | **Mesures à prendre**                             |
 |---------------|-----------------------------|-----------------------------------------------|---------------------------------------------------|
-| **1. Impact du nombre de processus (scalabilité forte)** | **`nbProcessus`**             | {1, 2, 4, 8, 16}                | Temps d'exécution                |
+| **1. Impact du nombre de processus (scalabilité forte)** | **`nbProcessus`**             | {1, 2, 4, 6, 8, 12, 16}                | Temps d'exécution                |
 |               | **`nbIterations`**           | 16*(10^7)                                      | Temps d'exécution                |
-| **2. Impact du nombre d'itérations (scalabilité faible)** | **`nbIterations`**           | {nbProcessus\*16x10^7}                      | Temps d'exécution                |
-|               | **`nbProcessus`**            | {1, 2, 4, 8, 16}                                            | Temps d'exécution                |
+| **2. Impact du nombre d'itérations (scalabilité faible)** | **`nbIterations`**           | {nbProcessus\*10^7}                      | Temps d'exécution                |
+|               | **`nbProcessus`**            | {1, 2, 4, 6, 8, 12, 16}                                           | Temps d'exécution                |
 
 
 
@@ -293,10 +297,12 @@ Dans ce scénario, nous maintenons constant le nombre total d'itérations (16 * 
 
 **Pourquoi ces valeurs ?**
 - **Nombre de processus** :
-  - Nous avons choisi les valeurs { 1, 2, 4, 8, 16 } car elles correspondent à des configurations courantes sur des systèmes multicœurs ou des clusters.  
+  - J'ai choisi les valeurs {1, 2, 4, 6, 8, 12, 16} car elles correspondent à des configurations courantes sur des systèmes multicœurs ou des clusters.  
   - Le test avec **1 processus** sert de référence pour mesurer les performances séquentielles et calculer le **speed-up**.
   - Les valeurs **2, 4, 8**, et **16 processus** permettent d'observer comment l'ajout progressif de ressources améliore (ou non) les performances.
   - La progression géométrique du nombre de processus (multiplié par 2) est choisie pour faciliter l'analyse du **speed-up**.
+  - Les valeurs **6, 12** ont été rajouter car les tests on été réaliser sur ma machine qui possède 6 cœurs physiques et 12 threads, grâce à la technologie Hyper-Threading.
+
 
 - **Nombre d’itérations (16 * 10^7)** :
   - La charge de travail est maintenue constante pour chaque test afin que l’augmentation du nombre de processus soit le seul facteur influençant le temps d'exécution. 
@@ -306,19 +312,19 @@ Dans ce scénario, nous maintenons constant le nombre total d'itérations (16 * 
 
 #### **2. Scénario 2 : Impact du nombre d'itérations (scalabilité faible)**
 
-Dans ce scénario, nous augmentons proportionnellement le nombre d'itérations avec le nombre de processus (nbProcessus * 16 * 10^7). L’objectif est d’évaluer la **scalabilité faible**, c’est-à-dire la capacité du programme à gérer une charge de travail croissante avec des ressources supplémentaires.
+Dans ce scénario, nous augmentons proportionnellement le nombre d'itérations avec le nombre de processus (nbProcessus * 10^7). L’objectif est d’évaluer la **scalabilité faible**, c’est-à-dire la capacité du programme à gérer une charge de travail croissante avec des ressources supplémentaires.
 
 **Pourquoi ces valeurs ?**
 - **Nombre d’itérations** :
   - La charge de travail est proportionnelle au nombre de processus. Cela simule des cas réalistes où chaque processus est responsable d’une part fixe de la charge totale, indépendamment du nombre total de processus.
   - La valeur (nbProcessus * 16 * 10^7) permettent de tester une charge élevée.
 
-- **Nombre de processus (1, 2, 4, 8, 16)** :
-  - Comme dans le scénario précédent, ces valeurs progressent géométriquement pour permettre une analyse cohérente de l’efficacité.
+- **Nombre de processus (1, 2, 4, 6, 8, 12, 16)** :
+  - Pour les même raison que dans le scénario précédent.
   - La multiplication par le nombre de processus reflète une augmentation naturelle de la charge de travail, où chaque processus conserve un volume fixe de calcul.
 
 
-### **Graphes :**
+### **Analyse :**
 Analyse réaliser sur mon ordinateur personnel :
 
 Processeur Intel Core i5-12400F : 
@@ -329,18 +335,44 @@ Processeur Intel Core i5-12400F :
 
 RAM : 32 Go
 
+### **Pi.java vs Assignement102**
+
 #### **Scénario 1 (scalabilité forte) :**
 
-<img src="img/Figure_scaForte.png">
+<img src="img/Figure_scaForte.png" alt="Figure de la scacabilité Forte des code pi.java et Assignement102">
+
+1. **Pi.java** :
+   - Le **speed-up** de l'algorithme **Pi.java** est beaucoup plus proche du **speed-up idéal** que **Assignement102**.
+   - Comme on peut l’observer dans les graphiques, la courbe de speed-up de **Pi.java** suit presque parfaitement la droite idéale jusqu’à **6 processus**. Cela correspond au nombre de **cœurs physiques** présents sur ma machine.
+   - **Après 6 processus**, la performance commence à ce dégrader lentement jusqu'à 12 processus, ce qui est dû à une **saturation des cœurs**. L'implémentation ne bénéficie plus de ressources physiques supplémentaires, mais elle reste tout de même efficace.
+   - **Après 12 processus** le speed-up diminue car la machine ne peut pas faire tourner 16 processus en même temps.
+
+2. **Assignement102** :
+   - Contrairement à **Pi.java**, **Assignement102** montre une **scalabilité forte très mauvaise**.
+   - Le **speed-up** reste constamment **inférieur à 1**, ce qui signifie que **l'ajout de processus dégrade les performances** au lieu de les améliorer.
+   - Cela est probablement dû au **paradigme d’itération parallèle** utilisé dans cette implémentation. L'accès **répété** et **non optimisé** à une ressource critique (**nAtomSuccess**) introduit un **goulot d'étranglement**. Comme nous avons pu le voir dans l'analyse du code, et qui pourrait être amélioré en incrémentant la ressource critique quand le point est en dehors du quart de cercle et non à l'intérieur. Ce qui passerait le goulot d'environ 75% des points à 25% des points.
+
+--- 
 
 #### **Scénario 2 (scalabilité faible) :**
 
-<img src="img/Figure_scaFaible.png">
+<img src="img/Figure_scaFaible.png" alt="Figure de la scacabilité Faible des code pi.java et Assignement102">
 
-On constate que Pi.java est nétement plus efficace que Assignement102, avec près de 10 fois le temps d'exécution de Pi.java pour assignement102.  
+1. **Pi.java** :
+   - Pour la **scalabilité faible**, la courbe de **speed-up** est légèrement meilleure que pour **Assignement102** pour 2 processus.
+   - Cependant, la **performance décroît grandement** dès le départ, ce qui montre une certaine **limite dans la scalabilité faible** de l'algorithme.
+
+2. **Assignement102** :
+   - Ici encore, **Assignement102** affiche une **très mauvaise scalabilité faible**.
+   - Le **speed-up** est toujours **inférieur à 1**, confirmant que l'ajout de processus entraîne une **augmentation du temps d'exécution** plutôt qu'une amélioration.
+
+
+**Cependant, on constate que Pi.java est nétement plus efficace que Assignement102, avec près de 6-7 fois le temps d'exécution de Pi.java pour assignement102.**
 
 ---
 ---
+
+<br><br>
 
 ## **Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire distribuée**
 
@@ -410,20 +442,37 @@ Les programmes `MasterSocket` et `WorkerSocket` interagissent via des **sockets 
 
 
 
+## Plan d'expérimentation :
+
+| **Scénario**                                      | **Paramètre**            | **Valeurs possibles**                       | **Mesures à prendre**        |
+|--------------------------------------------------|--------------------------|--------------------------------------------|-------------------------------|
+| **1. Impact du nombre de processus (scalabilité forte)** | **`nbProcessus`**        | {1, 4, 8, 12, 16, 24, 32, 48}              | Temps d'exécution            |
+|                                                  | **`nbIterations`**       | 192\*10^6                                  | Temps d'exécution            |
+| **2. Impact du nombre d'itérations (scalabilité faible)** | **`nbIterations`**       | {nbProcessus\*4\*10^6}  | Temps d'exécution            |
+|                                                  | **`nbProcessus`**        | {1, 4, 8, 12, 16, 24, 32, 48}              | Temps d'exécution            |
+
+---
+
+### **Analyse :**
+Analyse réaliser sur les ordinateurs de la salle G24.
+
+<img src="img/Figure_scaSocket.png" alt="Figure de la scacabilité Forte et Faible du code javaSocket">
+
+#### **Scénario 1 (scalabilité forte) :**
+
+- Dans l'implémentation **javaSocket**, on observe une **scalabilité forte exceptionnelle** :
+   - Le **temps d’exécution diminue fortement** avec l’augmentation du nombre de processus.
+   - Le **speed-up** suit presque parfaitement la droite idéale jusqu’à **48 processus**.
+   - Cela est dû à une implémentation **maître/worker** pour la **mémoire distribuée**, permettant l'exécution parallèle et indépendante sur chaque ordinateur et donc une utilisation efficace des ressources de chacune de ces machines.
+
+--- 
+
+#### **2. Scénario 2 : Impact du nombre d'itérations (scalabilité faible)**
+- Pour **javaSocket**, les performances de **scalabilité faible** montrent :
+   - Un **temps d’exécution légèrement instable** avec l’augmentation du nombre de processus, particulièrement entre **8 et 24 processus**, mais cela est sûrement dû au test qui a été réaliser sur trop peu d'itérations, donc les fluctuations sont plus marquées.
+   - Le **speed-up** reste toutefois **proche de 1**, indiquant une bonne gestion/parallélisation de chaque tâches par le master avec les workers.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### **Conclusion**
+- En conclusion, **javaSocket** surpasse **Pi.java** et **Assignement102** en termes de scalabilité forte et faible, mais le besoin en ressources est nettement supérieur avec **javaSocket** car nécessite plusieurs ordinateurs pour être totalement performant. Le meilleur compromis est donc l'utilisation de l'implémentation **javaSocket** qui elle-même utilise l'implémentation **pi.java** pour une exécution parallèle multi niveaux.
 
