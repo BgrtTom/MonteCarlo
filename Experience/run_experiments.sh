@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Fichier de sortie des résultats
-OUTPUT_FILE="XP_piJava.txt"
-
 # Initialiser le nombre de répétition
 numRepetition=5
 
@@ -22,15 +19,15 @@ fi
 # Scénario 1 : Scalabilité forte
 echo "Running Scenario 1: Strong Scalability"
 fixed_iterations=160000000
-for workers in 1 2 4 8 16; do
+for workers in 1 2 4 6 8 12 16; do
     echo "Workers: $workers, Iterations: $fixed_iterations"
     java Pi "$workers" "$fixed_iterations" strong "$numRepetition"
 done
 
 # Scénario 2 : Scalabilité faible
 echo "Running Scenario 2: Weak Scalability"
-for workers in 1 2 4 8 16; do
-    for iterations_base in 1000000 10000000 100000000; do
+for workers in 1 2 4 6 8 12 16; do
+    for iterations_base in 10000000; do
         iterations=$((iterations_base * workers))
         echo "Workers: $workers, Iterations: $iterations"
         java Pi "$workers" "$iterations" weak "$numRepetition"
@@ -51,15 +48,15 @@ fi
 # Scénario 1 : Scalabilité forte
 echo "Running Scenario 1: Strong Scalability"
 fixed_iterations=160000000
-for proc in 1 2 4 8 16; do
+for proc in 1 2 4 6 8 12 16; do
     echo "Proc: $proc, Iterations: $fixed_iterations"
     java Assignment102 "$proc" "$fixed_iterations" strong "$numRepetition"
 done
 
 # Scénario 2 : Scalabilité faible
 echo "Running Scenario 2: Weak Scalability"
-for proc in 1 2 4 8 16; do
-    for iterations_base in 1000000 10000000 100000000; do
+for proc in 1 2 4 6 8 12 16; do
+    for iterations_base in 10000000; do
         iterations=$((iterations_base * proc))
         echo "proc: $proc, Iterations: $iterations"
         java Assignment102 "$proc" "$iterations" weak "$numRepetition"
@@ -73,5 +70,5 @@ echo "Running plot_scalabilite.py to generate plots..."
 
 python3 plot_scalabilite.py
 
-echo "Experiments completed."
+echo "Plot completed."
 
