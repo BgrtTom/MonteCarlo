@@ -369,6 +369,12 @@ RAM : 32 Go
 
 **Cependant, on constate que Pi.java est nettement plus efficace que Assignement102, avec près de 6-7 fois le temps d'exécution de Pi.java pour assignement102.**
 
+## Remarque
+
+La norme ISO/IEC 25022 fait partie de la famille de normes ISO/IEC 25000, qui spécifie un cadre pour la qualité des logiciels. ISO/IEC 25022 définit plusieurs caractéristiques de qualité et de leurs sous-catégories, avec l'objectif de fournir un cadre de référence pour évaluer la qualité d'un logiciel. Parmi les caractéristiques pertinentes, on trouve la performance efficiency (efficacité de la performance), qui comprend la scalabilité comme l'un de ses attributs.
+
+Au sens de la norme, la scalabilité peut être directement liée à une des mesure d'efficacité, "Time efficiency (task time)" qui est calculé par X = (Tt – Ta) / Tt, où Tt = target time et Ta = actual time. 
+
 ---
 ---
 
