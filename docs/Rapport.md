@@ -9,8 +9,6 @@ INFI-3
 
 Ce rapport a été rédigé avec l'assistance de l'IA ChatGPT pour mettre en forme la présentation du document, pour qu'elle soit claire. Les fautes d'orthographe ont été corrigées à l'aide de l'extension LanguageTool et du site Scribens : https://www.scribens.fr.
 
-Voici un sommaire interactif pour faciliter la navigation dans votre document. Les liens pointent vers les parties spécifiques du texte :
-
 ---
 
 ## **Sommaire**
@@ -52,9 +50,8 @@ Voici un sommaire interactif pour faciliter la navigation dans votre document. L
 
 ---
 
- ### <p id="I">**I - La méthode de Monte Carlo pour le calcul de π**</p>
+ ### <h1 id="I">**I - La méthode de Monte Carlo pour le calcul de π**</h2>
 
----
 
 #### **Introduction**
 La méthode Monte-Carlo, est une méthode algorithmique visant à calculer une valeur numérique approchée en utilisant des procédés aléatoires, c'est-à-dire des techniques probabilistes.
@@ -163,7 +160,7 @@ On pouvait aussi utiliser le paradigme d'itération parrallèle/paralléisme de 
 ---
 <br><br>
 
-## **<p id="II">II - Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire partagée**</p>
+## **<h1 id="II">II - Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire partagée**</h1>
 
 ### <u>Code 1 : Assignnment102</u>
 
@@ -312,7 +309,7 @@ Ce code implémentation le pseudo code que j'avais proposé précédement. Il ut
 
 <br><br>
 
-## <p id="III">**III - Plan d'expérimentation sur les implémentations en mémoire parallèle :**</p>
+## <h1 id="III">**III - Plan d'expérimentation sur les implémentations en mémoire parallèle :**</h1>
 
 Voici un **plan d'expérimentation sous forme de tableau** pour tester les performances des deux codes :
 
@@ -499,7 +496,7 @@ L'amélioration du **Speed-Up** (réduction du temps d'exécution) améliore dir
 
 <br><br>
 
-## <p id="IV">**IV - Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire distribuée**</p>
+## <h1 id="IV">**IV - Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire distribuée**</h1>
 
 ### <u>Code 3 : javaSocket</u>
 
@@ -567,7 +564,7 @@ Les programmes `MasterSocket` et `WorkerSocket` interagissent via des **sockets 
 
 
 
-## <p id="V">**V - Plan d'expérimentation pour implmentation en mémoire distribuée:**</p>
+## <h1 id="V">**V - Plan d'expérimentation pour implmentation en mémoire distribuée:**</h1>
 
 | **Scénario**                                      | **Paramètre**            | **Valeurs possibles**                       | **Mesures à prendre**        |
 |--------------------------------------------------|--------------------------|--------------------------------------------|-------------------------------|
@@ -634,7 +631,7 @@ RAM : 32 Go
 
 ---
 
-## <p id="V">**VI - La rapidité n'est pas tout**</p>
+## <h1 id="V">**VI - La rapidité n'est pas tout**</h1>
 
 Lorsqu'on évalue la performance d'un algorithme, il est essentiel de ne pas se concentrer uniquement sur la rapidité d'exécution. Un autre aspect crucial est l'**Effectiveness**, la **qualité des résultats** produits par l'implémentation. Il est indispensable de s'assurer que l'implémentation suit bien la spécification qui est le calcul d'une approximation de pi à un certain degré d'erreur, les résultats renvoyés doivent donc non seulement être corrects, mais aussi suffisamment précis.
 
