@@ -447,7 +447,9 @@ On remarque que la scalabilité forte est encore plus performante que sur ma mac
 
 ## Remarque
 
-La norme ISO/IEC 25022 fait partie de la famille de normes ISO/IEC 25000, qui spécifie un cadre pour la qualité des logiciels. ISO/IEC 25022 définit plusieurs caractéristiques de qualité et de leurs sous-catégories, avec l'objectif de fournir un cadre de référence pour évaluer la qualité d'un logiciel. Parmi les caractéristiques pertinentes, on trouve la performance efficiency (efficacité de la performance), qui ne comprend pas directement la scalabilité comme l'un de ses attributs, mais qui peut être indirectement liée à une des mesure d'efficacité, "Time efficiency (task time)" qui est calculé par X = (Tt – Ta) / Tt, où Tt = target time et Ta = actual time. L'amélioration du **Speed-Up** (réduction du temps d'exécution) améliore directement la **Time Efficiency**, car un temps d'exécution plus rapide (réduit T_n) fait tendre T_a vers T_t, augmentant ainsi l'efficacité temporelle. Ainsi, une augmentation du Speed-Up, qui réduit T_n, conduit à une meilleure Time Efficiency.
+La norme ISO/IEC 25022 fait partie de la famille de normes ISO/IEC 25000(SQuaRE), qui spécifie un cadre complet pour évaluer la qualité des logiciels. ISO/IEC 25022 définit plusieurs caractéristiques de qualité et de leurs sous-catégories, avec l'objectif de fournir un cadre de référence pour évaluer la qualité d'un logiciel. Parmi les caractéristiques pertinentes, on trouve la performance efficiency (efficacité de la performance), qui ne comprend pas directement la scalabilité comme l'un de ses attributs, mais qui peut être indirectement liée à une des mesure d'efficacité, "Time efficiency (task time)" qui est calculé par X = (Tt – Ta) / Tt, où Tt = target time et Ta = actual time. 
+
+L'amélioration du **Speed-Up** (réduction du temps d'exécution) améliore directement la **Time Efficiency**, car un temps d'exécution plus rapide (réduit T_n) fait tendre T_a vers T_t, augmentant ainsi l'efficacité temporelle. Ainsi, une augmentation du Speed-Up, qui réduit T_n, conduit à une meilleure Time Efficiency.
 
 ---
 ---
@@ -591,9 +593,9 @@ RAM : 32 Go
 
 ## La rapidité n'est pas tout
 
-Lorsqu'on évalue la performance d'un algorithme, il est essentiel de ne pas se concentrer uniquement sur la rapidité d'exécution. Un autre aspect crucial est la **qualité des résultats** produits par l'implémentation. Il est indispensable de s'assurer que les résultats renvoyés sont non seulement corrects, mais aussi suffisamment précis.
+Lorsqu'on évalue la performance d'un algorithme, il est essentiel de ne pas se concentrer uniquement sur la rapidité d'exécution. Un autre aspect crucial est l'**Effectiveness**, la **qualité des résultats** produits par l'implémentation. Il est indispensable de s'assurer que l'implémentation suit bien la spécification qui est le calcul d'une approximation de pi à un certain degré d'erreur, les résultats renvoyés doivent donc non seulement être corrects, mais aussi suffisamment précis.
 
-Cela implique de vérifier l'exactitude des résultats en fonction du nombre d'itérations effectuées. Plus le nombre d'itérations est élevé, plus le calcul peut théoriquement se rapprocher de la valeur exacte de pi. Cependant, il est important de quantifier cette précision, notamment en observant comment l'erreur évolue à mesure que l'on augmente le nombre d'itérations. 
+Cela implique de vérifier l'exactitude des résultats en fonction du nombre d'itérations effectuées. Plus le nombre d'itérations est élevé, plus le calcul peut théoriquement se rapprocher de la valeur exacte de pi. Cependant, il est important de quantifier cette précision, notamment en observant comment l'erreur évolue à mesure que l'on augmente le nombre d'itérations. Cette mesure est directement liée à la mesure de "Task effectiveness" de la norme ISO/IEC 25022, qui mesure la proportion de résultat qui on atteint leur objectif, car nous allons chercher pour combien d'itération l'erreur atteint en médiane un niveau voulu et donc que le task effectiveness soit assez satisfaisant.
 
 <img src="img/Figure_ErreurNbPoint.png" alt="Figure de l'erreur en fonction du nombre de point sur 4 coeurs sur les ordinateurs de la G24">
 
