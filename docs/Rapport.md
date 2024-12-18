@@ -50,7 +50,7 @@ Ce rapport a été rédigé avec l'assistance de l'IA ChatGPT pour mettre en for
 
 ---
 
- ### <h1 id="I">**I - La méthode de Monte Carlo pour le calcul de π**</h2>
+ ### <h1 id="I">**I - La méthode de Monte Carlo pour le calcul de π**</h1>
 
 
 #### **Introduction**
@@ -160,7 +160,7 @@ On pouvait aussi utiliser le paradigme d'itération parrallèle/paralléisme de 
 ---
 <br><br>
 
-## **<h1 id="II">II - Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire partagée**</h1>
+## <h1 id="II">**II - Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire partagée**</h1>
 
 ### <u>Code 1 : Assignnment102</u>
 
@@ -631,7 +631,7 @@ RAM : 32 Go
 
 ---
 
-## <h1 id="V">**VI - La rapidité n'est pas tout**</h1>
+## <h1 id="VI">**VI - La rapidité n'est pas tout**</h1>
 
 Lorsqu'on évalue la performance d'un algorithme, il est essentiel de ne pas se concentrer uniquement sur la rapidité d'exécution. Un autre aspect crucial est l'**Effectiveness**, la **qualité des résultats** produits par l'implémentation. Il est indispensable de s'assurer que l'implémentation suit bien la spécification qui est le calcul d'une approximation de pi à un certain degré d'erreur, les résultats renvoyés doivent donc non seulement être corrects, mais aussi suffisamment précis.
 
