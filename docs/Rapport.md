@@ -289,6 +289,28 @@ Dans cette étude, les paramètres de test et leurs valeurs ont été minutieuse
 - **Erreur relative :** ((π - estimation de pi)/ π ), avec un objectif d'erreur <= 10^-2.
 - **Temps d'exécution :** Temps total nécessaire pour calculer l'approximation de pi.
 
+
+### **Clarification des concepts :**
+
+- **Scalabilité forte :**  
+  La **scalabilité forte** mesure l'impact de l'ajout de processus sur un problème de taille fixe.
+
+- **Scalabilité faible :**  
+  La **scalabilité faible** évalue l'effet de l'augmentation de la taille du problème proportionnellement au nombre de processus.
+
+- **Speed-up :**  
+  Le **speed-up** $`S_p`$ mesure le gain de performance obtenu en utilisant plusieurs processeurs par rapport à un seul. Il se calcule ainsi :  
+  $`S_p = \frac{T_1}{T_p}`$
+  où :
+  - $`S_p`$ le speedup 
+  - $`T_1`$ est le temps d'exécution sur un seul processus,
+  - $`T_P`$ est le temps d'exécution avec P processus.
+ 
+- **Temps d'exécution :**  
+  Le **temps d'exécution** est le temps total nécessaire pour effectuer le calcul de pi, incluant les calculs parallèles, les échanges de données et l'agrégation des résultats finaux.
+
+
+
 ### Justification des valeurs de test choisies
 
 #### **1. Scénario 1 : Impact du nombre de processus (scalabilité forte)**
@@ -342,12 +364,35 @@ RAM : 32 Go
 <img src="img/Figure_scaForte.png" alt="Figure de la scacabilité Forte des code pi.java et Assignement102">
 
 1. **Pi.java** :
+
+Tableau des moyennes des temps d'éxécution par nombre de processus
+| NumProc | NumIterations | Temps moyen d'exécution|
+|---------|---------------|------------------------|
+| 1       | 160000000     | 5648                   |
+| 2       | 160000000     | 2901                   |
+| 4       | 160000000     | 1561                   |
+| 6       | 160000000     | 1117                   |
+| 8       | 160000000     | 878                    |
+| 12      | 160000000     | 673                    |
+| 16      | 160000000     | 691                    |
+   
    - Le **speed-up** de l'algorithme **Pi.java** est beaucoup plus proche du **speed-up idéal** que **Assignement102**.
    - Comme on peut l’observer dans les graphiques, la courbe de speed-up de **Pi.java** suit presque parfaitement la droite idéale jusqu’à **6 processus**. Cela correspond au nombre de **cœurs physiques** présents sur ma machine.
    - **Après 6 processus**, la performance commence à ce dégrader lentement jusqu'à 12 processus, ce qui est dû à une **saturation des cœurs**. L'implémentation ne bénéficie plus de ressources physiques supplémentaires, mais elle reste tout de même efficace.
    - **Après 12 processus** le speed-up diminue car la machine ne peut pas faire tourner 16 processus en même temps.
 
-2. **Assignement102** :
+3. **Assignement102** :
+   
+| NumProc | NumIterations | Temps moyen d'exécution |
+|---------|---------------|-------------------------|
+| 1       | 160000000     | 50416                   |
+| 2       | 160000000     | 57697                   |
+| 4       | 160000000     | 59148                   |
+| 6       | 160000000     | 59513                   |
+| 8       | 160000000     | 58258                   |
+| 12      | 160000000     | 60694                   |
+| 16      | 160000000     | 60773                   |
+
    - Contrairement à **Pi.java**, **Assignement102** montre une **scalabilité forte très mauvaise**.
    - Le **speed-up** reste constamment **inférieur à 1**, ce qui signifie que **l'ajout de processus dégrade les performances** au lieu de les améliorer.
    - Cela est probablement dû au **paradigme d’itération parallèle** utilisé dans cette implémentation. L'accès **répété** et **non optimisé** à une ressource critique (**nAtomSuccess**) introduit un **goulot d'étranglement**. Comme nous avons pu le voir dans l'analyse du code, et qui pourrait être amélioré en incrémentant la ressource critique quand le point est en dehors du quart de cercle et non à l'intérieur. Ce qui passerait le goulot d'environ 75% des points à 25% des points.
@@ -359,21 +404,50 @@ RAM : 32 Go
 <img src="img/Figure_scaFaible.png" alt="Figure de la scacabilité Faible des code pi.java et Assignement102">
 
 1. **Pi.java** :
-   - Pour la **scalabilité faible**, la courbe de **speed-up** est légèrement meilleure que pour **Assignement102** pour 2 processus.
+
+| NumProc | NumIterations | Temps moyen d'exécution |
+|---------|---------------|-------------------------|
+| 1       | 10000000      | 346                    |
+| 2       | 20000000      | 369                    |
+| 4       | 40000000      | 403                    |
+| 6       | 60000000      | 425                    |
+| 8       | 80000000      | 447                    |
+| 12      | 120000000      | 504                    |
+| 16      | 160000000      | 686                    |
+
+   - Pour la **scalabilité faible**, la courbe de **speed-up** est nettement meilleure que pour **Assignement102**, mais elle chute assez rapidement vers un speed-up de 0,8 jusqu'à 8 processus qui est encore correct puis diminue fortement après les 12 processus.
    - Cependant, la **performance décroît grandement** dès le départ, ce qui montre une certaine **limite dans la scalabilité faible** de l'algorithme.
 
-2. **Assignement102** :
+3. **Assignement102** :
+
+| NumProc | NumIterations | Temps moyen d'exécution |
+|---------|---------------|-------------------------|
+| 1       | 10000000      | 1981                    |
+| 2       | 20000000      | 5539                    |
+| 4       | 40000000      | 12174                   |
+| 6       | 60000000      | 20315                   |
+| 8       | 80000000      | 27013                   |
+| 12      | 120000000     | 47071                   |
+| 16      | 160000000     | 68714                   |
+
+
    - Ici encore, **Assignement102** affiche une **très mauvaise scalabilité faible**.
-   - Le **speed-up** est toujours **inférieur à 1**, confirmant que l'ajout de processus entraîne une **augmentation du temps d'exécution** plutôt qu'une amélioration.
+   - Le **speed-up** chute beaucoup trop rapidement avec déjà un speed-up de 0,2 à 4 processus et à moins de 0,1 à partir de 8 processus, confirmant que l'ajout de processus entraîne une **augmentation du temps d'exécution** plutôt qu'une amélioration.
 
 
 **Cependant, on constate que Pi.java est nettement plus efficace que Assignement102, avec près de 6-7 fois le temps d'exécution de Pi.java pour assignement102.**
 
+---
+
+### **Test de scalabilité forte de pi.java sur une machine de la G24:**
+
+<img src="img/Figure_scaForte_G24.png" alt="Figure de la scacabilité Forte du code pi.java sur une machine de la G24">
+
+On remarque que la scalabilité forte est encore plus performante que sur ma machine jusqu'à 8 coeurs, avec un speedup qui suit presque totalement le speedup idéal puis stagne et commence à diminuer après 8 processus car la machine possède 8 coeurs.
+
 ## Remarque
 
-La norme ISO/IEC 25022 fait partie de la famille de normes ISO/IEC 25000, qui spécifie un cadre pour la qualité des logiciels. ISO/IEC 25022 définit plusieurs caractéristiques de qualité et de leurs sous-catégories, avec l'objectif de fournir un cadre de référence pour évaluer la qualité d'un logiciel. Parmi les caractéristiques pertinentes, on trouve la performance efficiency (efficacité de la performance), qui comprend la scalabilité comme l'un de ses attributs.
-
-Au sens de la norme, la scalabilité peut être directement liée à une des mesure d'efficacité, "Time efficiency (task time)" qui est calculé par X = (Tt – Ta) / Tt, où Tt = target time et Ta = actual time. 
+La norme ISO/IEC 25022 fait partie de la famille de normes ISO/IEC 25000, qui spécifie un cadre pour la qualité des logiciels. ISO/IEC 25022 définit plusieurs caractéristiques de qualité et de leurs sous-catégories, avec l'objectif de fournir un cadre de référence pour évaluer la qualité d'un logiciel. Parmi les caractéristiques pertinentes, on trouve la performance efficiency (efficacité de la performance), qui ne comprend pas directement la scalabilité comme l'un de ses attributs, mais qui peut être indirectement liée à une des mesure d'efficacité, "Time efficiency (task time)" qui est calculé par X = (Tt – Ta) / Tt, où Tt = target time et Ta = actual time. L'amélioration du **Speed-Up** (réduction du temps d'exécution) améliore directement la **Time Efficiency**, car un temps d'exécution plus rapide (réduit T_n) fait tendre T_a vers T_t, augmentant ainsi l'efficacité temporelle. Ainsi, une augmentation du Speed-Up, qui réduit T_n, conduit à une meilleure Time Efficiency.
 
 ---
 ---
@@ -460,11 +534,30 @@ Les programmes `MasterSocket` et `WorkerSocket` interagissent via des **sockets 
 ---
 
 ### **Analyse :**
-Analyse réaliser sur les ordinateurs de la salle G24.
+Analyse réaliser sur les ordinateurs de la salle G24:
+
+Processeur Intel Core i7-9700 : 
+- Nombre de cœurs : 8 cœurs physiques.
+- Nombre de threads : 8 threads.
+- Fréquence de base : 3,0 GHz.
+- Fréquence turbo : jusqu’à 4,7 GHz en mode boost.
+
+RAM : 32 Go
 
 <img src="img/Figure_scaSocket.png" alt="Figure de la scacabilité Forte et Faible du code javaSocket">
 
 #### **1. Scénario 1 : Impact du nombre de processus (scalabilité forte)**
+
+| Machines | Points totaux | Points / Worker | Nb Processeurs | Temps |
+|----------|---------------|-----------------|---------------|-------|
+| 1        | 192000000     | 192000000       | 1             | 5873  |
+| 1        | 192000000     | 48000000        | 4             | 1506  |
+| 2        | 192000000     | 24000000        | 8             | 756   |
+| 3        | 192000000     | 16000000        | 12            | 508   |
+| 4        | 192000000     | 12000000        | 16            | 385   |
+| 6        | 192000000     | 8000000         | 24            | 267   |
+| 8        | 192000000     | 6000000         | 32            | 206   |
+| 12       | 192000000     | 4000000         | 48            | 133   |
 
 - Dans l'implémentation **javaSocket**, on observe une **scalabilité forte exceptionnelle** :
    - Le **temps d’exécution diminue fortement** avec l’augmentation du nombre de processus.
@@ -474,11 +567,43 @@ Analyse réaliser sur les ordinateurs de la salle G24.
 --- 
 
 #### **2. Scénario 2 : Impact du nombre d'itérations (scalabilité faible)**
+
+| Machines | Points totaux | Points / Worker | Nb Processeurs | Temps |
+|----------|---------------|-----------------|---------------|-------|
+| 1        | 4000000       | 4000000         | 1             | 129   |
+| 1        | 16000000      | 4000000         | 4             | 140   |
+| 2        | 32000000      | 4000000         | 8             | 143   |
+| 3        | 48000000      | 4000000         | 12            | 136   |
+| 4        | 64000000      | 4000000         | 16            | 134   |
+| 6        | 96000000      | 4000000         | 24            | 139   |
+| 8        | 128000000     | 4000000         | 32            | 140   |
+| 12       | 192000000     | 4000000         | 48            | 141   |
+
 - Pour **javaSocket**, les performances de **scalabilité faible** montrent :
-   - Un **temps d’exécution légèrement instable** avec l’augmentation du nombre de processus, particulièrement entre **8 et 24 processus**, mais cela est sûrement dû au test qui a été réaliser sur trop peu d'itérations, donc les fluctuations sont plus marquées.
+   - Un **temps d’exécution légèrement instable** avec l’augmentation du nombre de processus, particulièrement entre **8 et 24 processus**, mais cela sûrtout dû au fait que l'échelle du graphique est très zoomer, donc les fluctuations sont plus marquées.
    - Le **speed-up** reste toutefois **proche de 1**, indiquant une bonne gestion/parallélisation de chaque tâches par le master avec les workers.
 
 
 ### **Conclusion**
-- En conclusion, **javaSocket** surpasse **Pi.java** et **Assignement102** en termes de scalabilité forte et faible, mais le besoin en ressources est nettement supérieur avec **javaSocket** car nécessite plusieurs ordinateurs pour être totalement performant. Le meilleur compromis est donc l'utilisation de l'implémentation **javaSocket** qui elle-même utilise l'implémentation **pi.java** pour une exécution parallèle multi niveaux.
+- En conclusion, **javaSocket** surpasse **Pi.java** et **Assignement102** en termes de scalabilité forte et faible, mais le besoin en ressources est nettement supérieur avec **javaSocket** car nécessite plusieurs ordinateurs pour être totalement performant.
+
+---
+
+## La rapidité n'est pas tout
+
+Lorsqu'on évalue la performance d'un algorithme, il est essentiel de ne pas se concentrer uniquement sur la rapidité d'exécution. Un autre aspect crucial est la **qualité des résultats** produits par l'implémentation. Il est indispensable de s'assurer que les résultats renvoyés sont non seulement corrects, mais aussi suffisamment précis.
+
+Cela implique de vérifier l'exactitude des résultats en fonction du nombre d'itérations effectuées. Plus le nombre d'itérations est élevé, plus le calcul peut théoriquement se rapprocher de la valeur exacte de pi. Cependant, il est important de quantifier cette précision, notamment en observant comment l'erreur évolue à mesure que l'on augmente le nombre d'itérations. 
+
+<img src="img/Figure_ErreurNbPoint.png" alt="Figure de l'erreur en fonction du nombre de point sur 4 coeurs sur les ordinateurs de la G24">
+
+#### Graphique de l'erreur en fonction du nombre d'itération réaliser sur l'implémentation pi.java, sur 4 coeurs une machine de la G24 (Confusion : je pensais que la machine possédait 4 cœurs, c'est pour cela que je l'ai réalisé sur 4 cœurs.)
+
+
+Par exemple, à **2 millions d'itérations**, on constate une **erreur de l'ordre de 10^-3**, tandis qu'avec un nombre beaucoup plus important, comme **1 milliard 280 millions d'itérations**, l'erreur peut descendre à **10^-5** voire **10^-6**. Cette amélioration de la précision est une conséquence directe de l'augmentation du nombre d'échantillons dans l'algorithme de Monte Carlo. 
+
+Cependant, cette amélioration n’est pas sans coût. À un certain moment, il devient nécessaire de s’interroger sur la **rentabilité** d'augmenter indéfiniment le nombre d'itérations pour obtenir une meilleure précision. En effet, bien que l'augmentation du nombre d'itérations réduise l'erreur, elle **entraîne également un allongement du temps d'exécution** de manière exponentielle. Ainsi, la question à poser est : **jusqu'à quel point est-il réellement utile de continuer à augmenter les itérations pour obtenir une précision accrue ?** 
+
+Il faut également tenir compte du **rapport coût/bénéfice**. Une fois que l'erreur atteint un seuil suffisamment faible pour les besoins pratiques de l'application, l'augmentation des itérations peut devenir inefficace, car elle requiert une puissance de calcul plus importante pour un gain marginal en précision.
+
 
