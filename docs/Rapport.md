@@ -52,7 +52,7 @@ Voici un sommaire interactif pour faciliter la navigation dans votre document. L
 
 ---
 
-### **I - La méthode de Monte Carlo pour le calcul de π**<p id="I"> </p>
+ ### <p id="I">**I - La méthode de Monte Carlo pour le calcul de π**</p>
 
 ---
 
@@ -163,7 +163,7 @@ On pouvait aussi utiliser le paradigme d'itération parrallèle/paralléisme de 
 ---
 <br><br>
 
-## **II - Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire partagée**<p id="II"> </p>
+## **<p id="II">II - Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire partagée**</p>
 
 ### <u>Code 1 : Assignnment102</u>
 
@@ -312,7 +312,7 @@ Ce code implémentation le pseudo code que j'avais proposé précédement. Il ut
 
 <br><br>
 
-## **III - Plan d'expérimentation sur les implémentations en mémoire parallèle :**<p id="III"> </p>
+## <p id="III">**III - Plan d'expérimentation sur les implémentations en mémoire parallèle :**</p>
 
 Voici un **plan d'expérimentation sous forme de tableau** pour tester les performances des deux codes :
 
@@ -499,7 +499,7 @@ L'amélioration du **Speed-Up** (réduction du temps d'exécution) améliore dir
 
 <br><br>
 
-## **IV - Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire distribuée**<p id="IV"> </p>
+## <p id="IV">**IV - Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire distribuée**</p>
 
 ### <u>Code 3 : javaSocket</u>
 
@@ -567,7 +567,7 @@ Les programmes `MasterSocket` et `WorkerSocket` interagissent via des **sockets 
 
 
 
-## **V - Plan d'expérimentation pour implmentation en mémoire distribuée:**<p id="V"> </p>
+## <p id="V">**V - Plan d'expérimentation pour implmentation en mémoire distribuée:**</p>
 
 | **Scénario**                                      | **Paramètre**            | **Valeurs possibles**                       | **Mesures à prendre**        |
 |--------------------------------------------------|--------------------------|--------------------------------------------|-------------------------------|
@@ -634,7 +634,7 @@ RAM : 32 Go
 
 ---
 
-## **VI - La rapidité n'est pas tout**<p id="VI"> </p>
+## <p id="V">**VI - La rapidité n'est pas tout**</p>
 
 Lorsqu'on évalue la performance d'un algorithme, il est essentiel de ne pas se concentrer uniquement sur la rapidité d'exécution. Un autre aspect crucial est l'**Effectiveness**, la **qualité des résultats** produits par l'implémentation. Il est indispensable de s'assurer que l'implémentation suit bien la spécification qui est le calcul d'une approximation de pi à un certain degré d'erreur, les résultats renvoyés doivent donc non seulement être corrects, mais aussi suffisamment précis.
 
