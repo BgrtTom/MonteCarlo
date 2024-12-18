@@ -449,7 +449,7 @@ On remarque que la scalabilité forte est encore plus performante que sur ma mac
 
 La norme ISO/IEC 25022 fait partie de la famille de normes ISO/IEC 25000(SQuaRE), qui spécifie un cadre complet pour évaluer la qualité des logiciels. ISO/IEC 25022 définit plusieurs caractéristiques de qualité et de leurs sous-catégories, avec l'objectif de fournir un cadre de référence pour évaluer la qualité d'un logiciel. Parmi les caractéristiques pertinentes, on trouve la performance efficiency (efficacité de la performance), qui ne comprend pas directement la scalabilité comme l'un de ses attributs, mais qui peut être indirectement liée à une des mesure d'efficacité, "Time efficiency (task time)" qui est calculé par X = (Tt – Ta) / Tt, où Tt = target time et Ta = actual time. 
 
-L'amélioration du **Speed-Up** (réduction du temps d'exécution) améliore directement la **Time Efficiency**, car un temps d'exécution plus rapide (réduit T_n) fait tendre T_a vers T_t, augmentant ainsi l'efficacité temporelle. Ainsi, une augmentation du Speed-Up, qui réduit T_n, conduit à une meilleure Time Efficiency.
+L'amélioration du **Speed-Up** (réduction du temps d'exécution) améliore directement la **Time Efficiency**, car un temps d'exécution plus rapide (réduit T_p) fait tendre T_a vers T_t, augmentant ainsi l'efficacité temporelle. Ainsi, une augmentation du Speed-Up, qui réduit T_p, conduit à une meilleure Time Efficiency.
 
 ---
 ---
