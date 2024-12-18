@@ -30,7 +30,7 @@ for workers in 1 2 4 6 8 12 16; do
     for iterations_base in 10000000; do
         iterations=$((iterations_base * workers))
         echo "Workers: $workers, Iterations: $iterations"
-        java Pi "$workers" "$iterations" weak "$numRepetition"
+        java Pi "$workers" "$iterations_base" weak "$numRepetition"
     done
 done
 
