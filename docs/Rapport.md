@@ -9,7 +9,50 @@ INFI-3
 
 Ce rapport a été rédigé avec l'assistance de l'IA ChatGPT pour mettre en forme la présentation du document, pour qu'elle soit claire. Les fautes d'orthographe ont été corrigées à l'aide de l'extension LanguageTool et du site Scribens : https://www.scribens.fr.
 
-### **I - La méthode de Monte Carlo pour le calcul de π**
+Voici un sommaire interactif pour faciliter la navigation dans votre document. Les liens pointent vers les parties spécifiques du texte :
+
+---
+
+## **Sommaire**
+
+**[I - La méthode de Monte Carlo pour le calcul de π](#I)**
+   - Introduction à la méthode Monte Carlo
+   - Principe de la méthode
+   - Algorithme et exemple numérique
+   - Parallélisation de la méthode Monte Carlo
+     
+**[II - Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire partagée](#II)**
+   - Code 1 : `Assignment102`
+      - Description des classes et composants
+      - Points clés techniques et remarques
+   - Code 2 : `Pi.java`
+      - Description des classes et composants
+      - Points clés techniques et remarques
+        
+**[III - Plan d'expérimentation sur les implémentations en mémoire parallèle](#III)**
+   - Détails des mesures
+   - Clarification des concepts
+   - Justification des valeurs de test choisies
+   - Analyse
+      - Pi.java vs Assignement102
+        
+**[IV - Analyse du code source implémentant la méthode de Monte Carlo pour calculer π en mémoire distribuée](#IV)**
+   - Code 3 : javaSocket
+      - Description des classes et composants
+         - Classe `MasterSocket`
+         - Classe `WorkerSocket`
+      - Points clés techniques et remarques
+      - Explication de l'exécution
+        
+**[V - Plan d'expérimentation pour implmentation en mémoire distribuée](#V)**
+   - Détails des mesures
+   - Analyse
+     
+**[VI - La rapidité n'est pas tout](#VI)**
+
+---
+
+### **I - La méthode de Monte Carlo pour le calcul de π**<p id="I">
 
 ---
 
@@ -120,7 +163,7 @@ On pouvait aussi utiliser le paradigme d'itération parrallèle/paralléisme de 
 ---
 <br><br>
 
-## **Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire partagée**
+## **II - Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire partagée**<p id="II">
 
 ### <u>Code 1 : Assignnment102</u>
 
@@ -165,7 +208,7 @@ Ce code implémentation directe de l'alogithme de Monte Carlo pour calculer pi, 
     - Les tâches sont définies dans une classe interne (`MonteCarlo`), et leur exécution est indépendante, permettant une distribution efficace sur plusieurs cœurs.
 
 
-2. **Gestion sécurisée des données partagées :**
+2. **Gestion sécurisée des données partagées :**#mon-ancre
     - L'utilisation d'un `AtomicInteger` garantit que les incréments du compteur `nAtomSuccess` sont protéger contre les incohérences, c'est l'équivalent un moniteur sur un entier.
 
 
@@ -269,7 +312,7 @@ Ce code implémentation le pseudo code que j'avais proposé précédement. Il ut
 
 <br><br>
 
-## Plan d'expérimentation :
+## **III - Plan d'expérimentation sur les implémentations en mémoire parallèle :**<p id="III">
 
 Voici un **plan d'expérimentation sous forme de tableau** pour tester les performances des deux codes :
 
@@ -309,7 +352,7 @@ Dans cette étude, les paramètres de test et leurs valeurs ont été minutieuse
 - **Temps d'exécution :**  
   Le **temps d'exécution** est le temps total nécessaire pour effectuer le calcul de pi, incluant les calculs parallèles, les échanges de données et l'agrégation des résultats finaux.
 
-
+---
 
 ### Justification des valeurs de test choisies
 
@@ -381,7 +424,7 @@ Tableau des moyennes des temps d'éxécution par nombre de processus
    - **Après 6 processus**, la performance commence à ce dégrader lentement jusqu'à 12 processus, ce qui est dû à une **saturation des cœurs**. L'implémentation ne bénéficie plus de ressources physiques supplémentaires, mais elle reste tout de même efficace.
    - **Après 12 processus** le speed-up diminue car la machine ne peut pas faire tourner 16 processus en même temps.
 
-3. **Assignement102** :
+2. **Assignement102** :
    
 | NumProc | NumIterations | Temps moyen d'exécution |
 |---------|---------------|-------------------------|
@@ -418,7 +461,7 @@ Tableau des moyennes des temps d'éxécution par nombre de processus
    - Pour la **scalabilité faible**, la courbe de **speed-up** est nettement meilleure que pour **Assignement102**, mais elle chute assez rapidement vers un speed-up de 0,8 jusqu'à 8 processus qui est encore correct puis diminue fortement après les 12 processus.
    - Cependant, la **performance décroît grandement** dès le départ, ce qui montre une certaine **limite dans la scalabilité faible** de l'algorithme.
 
-3. **Assignement102** :
+2. **Assignement102** :
 
 | NumProc | NumIterations | Temps moyen d'exécution |
 |---------|---------------|-------------------------|
@@ -456,7 +499,7 @@ L'amélioration du **Speed-Up** (réduction du temps d'exécution) améliore dir
 
 <br><br>
 
-## **Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire distribuée**
+## **IV - Analyse des codes sources implémentant la méthode de Monte Carlo pour calculer π en mémoire distribuée**<p id="IV">
 
 ### <u>Code 3 : javaSocket</u>
 
@@ -524,7 +567,7 @@ Les programmes `MasterSocket` et `WorkerSocket` interagissent via des **sockets 
 
 
 
-## Plan d'expérimentation :
+## **V - Plan d'expérimentation pour implmentation en mémoire distribuée:**<p id="V">
 
 | **Scénario**                                      | **Paramètre**            | **Valeurs possibles**                       | **Mesures à prendre**        |
 |--------------------------------------------------|--------------------------|--------------------------------------------|-------------------------------|
@@ -591,7 +634,7 @@ RAM : 32 Go
 
 ---
 
-## La rapidité n'est pas tout
+## **VI - La rapidité n'est pas tout**<p id="VI">
 
 Lorsqu'on évalue la performance d'un algorithme, il est essentiel de ne pas se concentrer uniquement sur la rapidité d'exécution. Un autre aspect crucial est l'**Effectiveness**, la **qualité des résultats** produits par l'implémentation. Il est indispensable de s'assurer que l'implémentation suit bien la spécification qui est le calcul d'une approximation de pi à un certain degré d'erreur, les résultats renvoyés doivent donc non seulement être corrects, mais aussi suffisamment précis.
 
